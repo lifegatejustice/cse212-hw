@@ -13,7 +13,17 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        // Plan for MultiplesOf:
+        // 1. Create a new double array of size 'length'.
+        // 2. Loop from 1 to length (inclusive), for each i, set array[i-1] = number * i.
+        // 3. Return the array.
+
+        double[] result = new double[length];
+        for (int i = 1; i <= length; i++)
+        {
+            result[i - 1] = number * i;
+        }
+        return result;
     }
 
     /// <summary>
@@ -24,10 +34,22 @@ public static class Arrays
     /// Because a list is dynamic, this function will modify the existing data list rather than returning a new list.
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
-    {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
-    }
+{
+    int n = data.Count;
+
+    // Normalize amount in case it's equal to list size
+    amount = amount % n;
+
+    if (amount == 0)
+        return;
+
+    // Take last 'amount' elements
+    List<int> tail = data.GetRange(n - amount, amount);
+
+    // Remove them from the end
+    data.RemoveRange(n - amount, amount);
+
+    // Insert them at the beginning
+    data.InsertRange(0, tail);
+}
 }
