@@ -26,9 +26,9 @@ public class TakingTurnsQueue
 
     /// <summary>
     /// Get the next person in the queue and return them. The person should
-    /// go to the back of the queue again unless the turns variable shows that they 
-    /// have no more turns left.  Note that a turns value of 0 or less means the 
-    /// person has an infinite number of turns.  An error exception is thrown 
+    /// go to the back of the queue again unless the turns variable shows that they
+    /// have no more turns left.  Note that a turns value of 0 or less means the
+    /// person has an infinite number of turns.  An error exception is thrown
     /// if the queue is empty.
     /// </summary>
     public Person GetNextPerson()
@@ -40,7 +40,11 @@ public class TakingTurnsQueue
         else
         {
             Person person = _people.Dequeue();
-            if (person.Turns > 1)
+            if (person.Turns <= 0)
+            {
+                _people.Enqueue(person);
+            }
+            else if (person.Turns > 1)
             {
                 person.Turns -= 1;
                 _people.Enqueue(person);
