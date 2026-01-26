@@ -1,5 +1,0 @@
-- [x] Implement FindPairs in SetsAndMaps.cs
-- [x] Implement SummarizeDegrees in SetsAndMaps.cs
-- [x] Implement IsAnagram in SetsAndMaps.cs
-- [x] Implement MoveLeft, MoveRight, MoveUp, MoveDown in Maze.cs
-- [x] Implement EarthquakeDailySummary in SetsAndMaps.cs and FeatureCollection.cs
