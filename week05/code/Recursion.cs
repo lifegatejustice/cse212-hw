@@ -7,15 +7,16 @@ public static class Recursion
     /// # Problem 1 #
     /// #############
     /// Using recursion, find the sum of 1^2 + 2^2 + 3^2 + ... + n^2
-    /// and return it.  Remember to both express the solution 
-    /// in terms of recursive call on a smaller problem and 
+    /// and return it.  Remember to both express the solution
+    /// in terms of recursive call on a smaller problem and
     /// to identify a base case (terminating case).  If the value of
     /// n <= 0, just return 0.   A loop should not be used.
     /// </summary>
     public static int SumSquaresRecursive(int n)
     {
-        // TODO Start Problem 1
-        return 0;
+        if (n <= 0)
+            return 0;
+        return n * n + SumSquaresRecursive(n - 1);
     }
 
     /// <summary>
@@ -39,20 +40,31 @@ public static class Recursion
     /// </summary>
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
-        // TODO Start Problem 2
+        if (word.Length == size)
+        {
+            results.Add(word);
+            return;
+        }
+        for (int i = 0; i < letters.Length; i++)
+        {
+            if (!word.Contains(letters[i]))
+            {
+                PermutationsChoose(results, letters, size, word + letters[i]);
+            }
+        }
     }
 
     /// <summary>
     /// #############
     /// # Problem 3 #
     /// #############
-    /// Imagine that there was a staircase with 's' stairs.  
-    /// We want to count how many ways there are to climb 
-    /// the stairs.  If the person could only climb one 
-    /// stair at a time, then the total would be just one.  
-    /// However, if the person could choose to climb either 
-    /// one, two, or three stairs at a time (in any order), 
-    /// then the total possibilities become much more 
+    /// Imagine that there was a staircase with 's' stairs.
+    /// We want to count how many ways there are to climb
+    /// the stairs.  If the person could only climb one
+    /// stair at a time, then the total would be just one.
+    /// However, if the person could choose to climb either
+    /// one, two, or three stairs at a time (in any order),
+    /// then the total possibilities become much more
     /// complicated.  If there were just three stairs,
     /// the possible ways to climb would be four as follows:
     ///
@@ -64,24 +76,24 @@ public static class Recursion
     /// With just one step to go, the ways to get
     /// to the top of 's' stairs is to either:
     ///
-    /// - take a single step from the second to last step, 
-    /// - take a double step from the third to last step, 
+    /// - take a single step from the second to last step,
+    /// - take a double step from the third to last step,
     /// - take a triple step from the fourth to last step
     ///
-    /// We don't need to think about scenarios like taking two 
+    /// We don't need to think about scenarios like taking two
     /// single steps from the third to last step because this
     /// is already part of the first scenario (taking a single
     /// step from the second to last step).
     ///
     /// These final leaps give us a sum:
     ///
-    /// CountWaysToClimb(s) = CountWaysToClimb(s-1) + 
+    /// CountWaysToClimb(s) = CountWaysToClimb(s-1) +
     ///                       CountWaysToClimb(s-2) +
     ///                       CountWaysToClimb(s-3)
     ///
     /// To run this function for larger values of 's', you will need
     /// to update this function to use memoization.  The parameter
-    /// 'remember' has already been added as an input parameter to 
+    /// 'remember' has already been added as an input parameter to
     /// the function for you to complete this task.
     /// </summary>
     public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null)
@@ -96,10 +108,15 @@ public static class Recursion
         if (s == 3)
             return 4;
 
-        // TODO Start Problem 3
+        if (remember == null)
+            remember = new Dictionary<int, decimal>();
 
-        // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        if (remember.ContainsKey(s))
+            return remember[s];
+
+        // Solve using recursion with memoization
+        decimal ways = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
+        remember[s] = ways;
         return ways;
     }
 
@@ -118,7 +135,16 @@ public static class Recursion
     /// </summary>
     public static void WildcardBinary(string pattern, List<string> results)
     {
-        // TODO Start Problem 4
+        int starIndex = pattern.IndexOf('*');
+        if (starIndex == -1)
+        {
+            results.Add(pattern);
+            return;
+        }
+        string prefix = pattern[..starIndex];
+        string suffix = pattern[(starIndex + 1)..];
+        WildcardBinary(prefix + "0" + suffix, results);
+        WildcardBinary(prefix + "1" + suffix, results);
     }
 
     /// <summary>
@@ -132,12 +158,28 @@ public static class Recursion
         if (currPath == null) {
             currPath = new List<ValueTuple<int, int>>();
         }
-        
-        // currPath.Add((1,2)); // Use this syntax to add to the current path
 
-        // TODO Start Problem 5
-        // ADD CODE HERE
+        currPath.Add((x, y));
 
-        // results.Add(currPath.AsString()); // Use this to add your path to the results array keeping track of complete maze solutions when you find the solution.
+        if (maze.IsEnd(x, y))
+        {
+            results.Add(currPath.AsString());
+            currPath.RemoveAt(currPath.Count - 1);
+            return;
+        }
+
+        // Try moving up, down, left, right
+        int[][] directions = new int[][] { new int[] { 0, -1 }, new int[] { 0, 1 }, new int[] { -1, 0 }, new int[] { 1, 0 } };
+        foreach (var dir in directions)
+        {
+            int newX = x + dir[0];
+            int newY = y + dir[1];
+            if (maze.IsValidMove(currPath, newX, newY))
+            {
+                SolveMaze(results, maze, newX, newY, currPath);
+            }
+        }
+
+        currPath.RemoveAt(currPath.Count - 1);
     }
 }
