@@ -8,16 +8,6 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
-
-        // Plan for MultiplesOf:
-        // 1. Create a new double array of size 'length'.
-        // 2. Loop from 1 to length (inclusive), for each i, set array[i-1] = number * i.
-        // 3. Return the array.
-
         double[] result = new double[length];
         for (int i = 1; i <= length; i++)
         {
